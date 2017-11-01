@@ -4,6 +4,7 @@ import nl.biopet.utils.test.tools.ToolTest
 import org.testng.annotations.Test
 
 class ValidateVcfTest extends ToolTest[Args] {
+  def toolCommand: ValidateVcf.type = ValidateVcf
   @Test
   def testNoArgs(): Unit = {
     intercept[IllegalArgumentException] {
