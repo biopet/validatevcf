@@ -21,16 +21,19 @@ object ValidateVcf extends ToolCommand[Args] {
     try {
       for (record <- vcfReader.iterator()) {
         val contig = record.getContig
-        require(regions.chrRecords.contains(contig),
+        require(
+          regions.chrRecords.contains(contig),
           s"The following contig in the vcf file does not exist in the reference: $contig")
         val start = record.getStart
         val end = record.getEnd
         val contigStart = regions.chrRecords(contig).head.start
         val contigEnd = regions.chrRecords(contig).head.end
-        require(start >= contigStart && start <= contigEnd,
+        require(
+          start >= contigStart && start <= contigEnd,
           s"The following position does not exist on reference: $contig:$start")
         if (end != start)
-          require(end >= contigStart && end <= contigEnd,
+          require(
+            end >= contigStart && end <= contigEnd,
             s"The following position does not exist on reference: $contig:$end")
         require(
           start <= end,
