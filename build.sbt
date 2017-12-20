@@ -10,9 +10,7 @@ biopetIsTool := true
 
 mainClass in assembly := Some("nl.biopet.tools.validatevcf.ValidateVcf")
 
-developers := List(
-  Developer(id="ffinfo", name="Peter van 't Hof", email="pjrvanthof@gmail.com", url=url("https://github.com/ffinfo")
-)
+developers := List(Developer(id="ffinfo", name="Peter van 't Hof", email="pjrvanthof@gmail.com", url=url("https://github.com/ffinfo")))
 
 scalaVersion := "2.11.11"
 
