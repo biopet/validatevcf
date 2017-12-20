@@ -49,4 +49,26 @@ object ValidateVcf extends ToolCommand[Args] {
 
     logger.info("Done")
   }
+
+  def descriptionText: String =
+    s"""
+      |$toolName validates a VCF file against a reference genomes. It checks if the positions
+      |present in the VCF are also present on the reference genoome.
+    """.stripMargin
+
+  def manualText: String =
+    """
+      |To run this tool a vcf file and a reference genome are needed.
+      |Optionally, a `--disableFail` flag can be set. This will make the
+      |tool always exit with exit code 0.
+    """.stripMargin
+
+  def exampleText: String =
+    s"""
+       |To validate a vcf file against a reference genome use:
+       |${example("-i", "input.vcf", "-R", "myReference.fa")}
+       |
+       |To validate but not fail on exit use:
+       |${example("-i", "input.vcf", "-R", "myReference.fa", "--disableFail")}
+     """.stripMargin
 }
