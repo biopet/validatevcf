@@ -42,6 +42,7 @@ class ValidateVcfTest extends ToolTest[Args] {
               "-R",
               resourcePath("/fake_chrQ.fa")))
     }
+
     an[IllegalArgumentException] shouldBe thrownBy {
       ValidateVcf.main(
         Array("-i",
@@ -49,6 +50,16 @@ class ValidateVcfTest extends ToolTest[Args] {
               "-R",
               resourcePath("/fake_chrQ.fa")))
     }
+
+    intercept[IllegalArgumentException] {
+      ValidateVcf.main(
+        Array("-i",
+              resourcePath("/chrQ_wrong_ref.vcf"),
+              "-R",
+              resourcePath("/fake_chrQ.fa")))
+    }.getMessage.startsWith(
+      "requirement failed: Reference sequence is not the same") shouldBe true
+
     noException shouldBe thrownBy {
       ValidateVcf.main(
         Array("-i",

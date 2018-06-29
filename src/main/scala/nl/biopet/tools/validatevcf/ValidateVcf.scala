@@ -21,7 +21,9 @@
 
 package nl.biopet.tools.validatevcf
 
+import htsjdk.samtools.reference.IndexedFastaSequenceFile
 import htsjdk.variant.vcf.VCFFileReader
+import nl.biopet.utils.ngs.fasta.ReferenceRegion
 import nl.biopet.utils.ngs.intervals.BedRecordList
 import nl.biopet.utils.tool.ToolCommand
 
@@ -38,6 +40,8 @@ object ValidateVcf extends ToolCommand[Args] {
     val regions = BedRecordList.fromReference(cmdArgs.reference)
 
     val vcfReader = new VCFFileReader(cmdArgs.inputVcf, false)
+
+    val reader = new IndexedFastaSequenceFile(cmdArgs.reference)
 
     try {
       for (record <- vcfReader.iterator()) {
@@ -59,6 +63,13 @@ object ValidateVcf extends ToolCommand[Args] {
         require(
           start <= end,
           "End location of variant is larger than start position. This should not be possible")
+        val refSequence = ReferenceRegion(reader,
+                                          record.getContig,
+                                          record.getStart,
+                                          record.getEnd).sequence
+        val recordSequence = record.getReference.getBases
+        require(refSequence.toSeq == recordSequence.toSeq,
+                s"Reference sequence is not the same for $record")
       }
     } catch {
       case e: IllegalArgumentException =>
